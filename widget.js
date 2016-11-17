@@ -1430,8 +1430,9 @@ chilipeppr.publish("/com-chilipeppr-widget-serialport/send", "G1 X10 F500\\n");
                 var data = null;
                 
                 // remove all UTF8 characters and other special character
-                msg = msg.replace(/[^\u0000-\u007F]+/g, "");
-                
+                // and remove all special ASCII characters
+                msg = msg.replace(/[^\u0000-\u007F]+/g, "").replace("[^\\x00-\\x7f]", "");
+
                 //try {
                     data = $.parseJSON(msg);
                 /*
