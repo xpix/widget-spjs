@@ -1,4 +1,4 @@
-/* global requirejs cprequire cpdefine chilipeppr */
+/* $ global requirejs cprequire cprequire_test cpdefine chilipeppr */
 // Defining the globals above helps Cloud9 not show warnings for those variables
 
 // ChiliPeppr Widget/Element Javascript
@@ -1429,22 +1429,18 @@ chilipeppr.publish("/com-chilipeppr-widget-serialport/send", "G1 X10 F500\\n");
                 //console.log("it is json");
                 var data = null;
                 
-                // remove all UTF8 characters and other special character
-                // and remove all special ASCII characters
-                msg = msg.replace(/[^\u0000-\u007F]+/g, "").replace("[^\\x00-\\x7f]", "");
-
-                //try {
+                try {
                     data = $.parseJSON(msg);
-                /*
                 } catch (e) {
                     // error
                     console.log("got error parsing json from CNC controller. msg:", msg);
                     // try some cleanup based on some anomalies we've seen
-                    msg = msg.replace(/\{"sr"\{"sr"\:/, '{"sr":');
-                    msg = msg.replace(/\{"r"\{"sr"\:/, '{"sr":');
+                    // remove all UTF8 characters and other special character
+                    // and remove all special ASCII characters
+                    msg = msg.replace(/[^\u0000-\u007F]+/g, "").replace("[^\\x00-\\x7f]", "");
                     data = $.parseJSON(msg);
                 }
-                */
+
                 if (data && data.Cmd && data.Cmd == "OpenFail") {
                     // we tried to open the serial port, but it failed. usually access denied.
                     this.onPortOpenFail(data);
